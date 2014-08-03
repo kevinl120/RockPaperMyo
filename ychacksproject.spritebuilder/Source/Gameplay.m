@@ -51,6 +51,10 @@
     Heart *_heart1;
     Heart *_heart2;
     Heart *_heart3;
+    
+    CCButton *_rockButton;
+    CCButton *_paperButton;
+    CCButton *_scissorsButton;
 }
 
 // -----------------------------------------------------------------------
@@ -69,9 +73,13 @@
     _scissors = (Scissors*)[CCBReader load:@"Scissors"];
     
     
-    _rock.position = ccp(160, 225);
-    _paper.positionInPoints = ccp(160, 225);
-    _scissors.positionInPoints = ccp(160, 225);
+    _rock.positionType = CCPositionTypeNormalized;
+    _rock.position = ccp(0.5, 0.475);
+    _paper.positionType = CCPositionTypeNormalized;
+    _paper.position = ccp(0.5, 0.475);
+    _scissors.positionType = CCPositionTypeNormalized;
+    _scissors.position = ccp(0.5, 0.475);
+    
     
     _score = 0;
     
@@ -82,7 +90,7 @@
     [self changePicture];
 }
 
-// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------q
 #pragma mark - Receive Interaction from Myo
 // -----------------------------------------------------------------------
 
