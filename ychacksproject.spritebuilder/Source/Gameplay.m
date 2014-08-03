@@ -55,6 +55,10 @@
     CCButton *_rockButton;
     CCButton *_paperButton;
     CCButton *_scissorsButton;
+    
+    CCSprite *_triangle;
+    
+    NSInteger _count;
 }
 
 // -----------------------------------------------------------------------
@@ -82,10 +86,12 @@
     
     
     _score = 0;
+    _count = -179;
     
     _timeCount = 1;
     _timer.scaleX = _timeCount/2;
     [self schedule:@selector(timerUpdate) interval:0.01];
+    [self schedule:@selector(triangleUpdate) interval:0.05];
     
     [self changePicture];
 }
@@ -214,6 +220,19 @@
     }
 }
 
+-(void) triangleUpdate {
+//    NSInteger randomInteger;
+//    
+//    randomInteger = (arc4random() % 358) - 179;
+
+    CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
+    _count += 10;
+    if (_count >= 179) {
+        _count = -179;
+    }
+    _triangle.effect = hueEffect;
+}
+
 - (void) gameOver {
     CCScene *scene = [CCBReader loadAsScene:@"Recap"];
     
@@ -279,6 +298,7 @@
     
     [self changePicture];
 }
+
 
 
 
