@@ -24,7 +24,7 @@
 
 - (void) startGame {
     CCScene *gameplayScene = [CCBReader loadAsScene: @"Gameplay"];
-    CCTransition *transition = [CCTransition transitionFadeWithDuration:1.0f];
+    CCTransition *transition = [CCTransition transitionCrossFadeWithDuration:0.1f];
     [[CCDirector sharedDirector] replaceScene:gameplayScene withTransition:transition];
 }
 

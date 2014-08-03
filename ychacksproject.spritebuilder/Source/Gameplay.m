@@ -12,7 +12,6 @@
 
 #import <MyoKit/MyoKit.h>
 
-
 #import "Rock.h"
 #import "Paper.h"
 #import "Scissors.h"
@@ -34,6 +33,8 @@
     float _timeCount;
     
     CCSprite *_picture;
+    
+    CCSprite *_background;
     
     CCLabelTTF *_scoreLabel;
     
@@ -63,14 +64,14 @@
                                                  name:TLMMyoDidReceivePoseChangedNotification
                                                object:nil];
     
-    
     _rock = (Rock*)[CCBReader load:@"Rock"];
     _paper = (Paper*)[CCBReader load:@"Paper"];
     _scissors = (Scissors*)[CCBReader load:@"Scissors"];
     
-    _rock.positionInPoints = ccp(160, 284);
-    _paper.positionInPoints = ccp(160, 284);
-    _scissors.positionInPoints = ccp(160, 284);
+    
+    _rock.position = ccp(160, 225);
+    _paper.positionInPoints = ccp(160, 225);
+    _scissors.positionInPoints = ccp(160, 225);
     
     _score = 0;
     
@@ -117,33 +118,30 @@
 - (void) changePicture {
     NSInteger randomInt;
     
-    if (_previousRock) {
-        randomInt = (arc4random() % 2) + 1;
-    } else if (_previousPaper) {
-        randomInt = (arc4random() % 2);
-        if (randomInt == 1) {
-            randomInt++;
-        }
-    } else if (_previousScissors) {
-        randomInt = arc4random() % 2;
-    } else {
-        randomInt = arc4random() % 3;
-    }
+    randomInt = (arc4random() % 3);
+    
+   // CCActionFadeOut *fadeOut = [CCActionFadeOut actionWithDuration:0.2f];
     
     if ([[self children] containsObject:_rock]) {
-        [self removeChild:_rock];
+        //[_rock runAction:fadeOut];
+        [_rock removeFromParent];
     }
     if ([[self children] containsObject:_paper]) {
-        [self removeChild:_paper];
+        //[_paper runAction:fadeOut];
+        [_paper removeFromParent];
     }
     if ([[self children] containsObject:_scissors]) {
-        [self removeChild:_scissors];
+        //[_scissors runAction:fadeOut];
+        [_scissors removeFromParent];
     }
+    
+    CCEffectBrightness *brightnessEffect = [CCEffectBrightness effectWithBrightness: sin(45)];
     
     
     switch (randomInt) {
         case 0:
             [self addChild:_rock z:1];
+            
             _previousRock = true;
             _previousPaper = false;
             _previousScissors = false;
@@ -174,7 +172,7 @@
 
 - (void) rockSelected {
     if ([[self children] containsObject:_scissors]) {
-        [self subtractLives];
+        [self gotWrong];
     } else if ([[self children] containsObject:_paper]) {
         [self gotCorrect];
     }
@@ -182,7 +180,7 @@
 
 - (void) paperSelected {
     if ([[self children] containsObject:_rock]) {
-        [self subtractLives];
+        [self gotWrong];
     } else if ([[self children] containsObject:_scissors]) {
         [self gotCorrect];
     }
@@ -190,7 +188,7 @@
 
 - (void) scissorsSelected {
     if ([[self children] containsObject:_paper]) {
-        [self subtractLives];
+        [self gotWrong];
     } else if ([[self children] containsObject:_rock]) {
         [self gotCorrect];
     }
@@ -226,7 +224,20 @@
     recapScreen.highScoreLabel.string = [NSString stringWithFormat:@"%d", [_highscoreDefaults integerForKey:@"highscore"]];
 }
 
-- (void) subtractLives {
+- (void) gotWrong {
+    
+    CCActionBlink *blink = [CCActionBlink actionWithDuration:0.3f blinks:2];
+    
+    if ([[self children] containsObject:_rock]) {
+        [_rock runAction:blink];
+    }
+    if ([[self children] containsObject:_paper]) {
+        [_paper runAction:blink];
+    }
+    if ([[self children] containsObject:_scissors]) {
+        [_scissors runAction:blink];
+    }
+    
     if ([[_livesBox children] containsObject:_heart3]) {
         [_livesBox removeChild:_heart3];
     } else if ([[_livesBox children] containsObject:_heart2]) {
@@ -239,7 +250,20 @@
 - (void) gotCorrect {
     _score++;
     if (_timeCount < 1.9) {
-        _timeCount += 0.1;
+        if (_score <= 20) {
+            _timeCount += 0.1;
+        } else if (_score > 20 && _score <= 40) {
+            _timeCount += 0.09;
+        } else if (_score > 40 && _score <= 60) {
+            _timeCount += 0.08;
+        } else if (_score > 60 && _score <= 80) {
+            _timeCount += 0.07;
+        } else if (_score > 80 && _score <= 100) {
+            _timeCount += 0.06;
+        } else if (_score > 100) {
+            _timeCount += 0.05;
+        }
+        
     } else if (_timeCount > 1.9 && _timeCount < 2.0) {
         _timeCount = 2.0;
     }
@@ -247,5 +271,8 @@
     
     [self changePicture];
 }
+
+
+
 
 @end
