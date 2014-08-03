@@ -11,6 +11,5 @@
 @interface Gameplay : CCNode
 
 @property (nonatomic, assign) int score;
-//@property (nonatomic, assign) int highscore;
 
 @end

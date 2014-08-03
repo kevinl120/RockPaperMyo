@@ -74,9 +74,9 @@
     
     _score = 0;
     
-    _timeCount = 0.5;
-    _timer.scaleX = _timeCount;
-    [self schedule:@selector(timerUpdate) interval:1];
+    _timeCount = 1;
+    _timer.scaleX = _timeCount/2;
+    [self schedule:@selector(timerUpdate) interval:0.01];
     
     [self changePicture];
 }
@@ -201,16 +201,15 @@
 // -----------------------------------------------------------------------
 
 - (void) timerUpdate {
-    _timeCount -= 0.1;
-    _timer.scaleX = _timeCount;
-    if (_timeCount < 0.01) {
+    _timeCount -= 0.001;
+    _timer.scaleX = _timeCount/2;
+    if (_timeCount < 0.00001) {
         [self gameOver];
     }
 }
 
 - (void) gameOver {
     CCScene *scene = [CCBReader loadAsScene:@"Recap"];
-    //        CCTransition *transition = [CCTransition transitionFadeWithDuration:1.0f];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     
@@ -239,7 +238,11 @@
 
 - (void) gotCorrect {
     _score++;
-    _timeCount += 0.15;
+    if (_timeCount < 1.9) {
+        _timeCount += 0.1;
+    } else if (_timeCount > 1.9 && _timeCount < 2.0) {
+        _timeCount = 2.0;
+    }
     _scoreLabel.string = [NSString stringWithFormat:@"%d", _score];
     
     [self changePicture];

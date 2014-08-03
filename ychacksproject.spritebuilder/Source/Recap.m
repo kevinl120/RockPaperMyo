@@ -20,4 +20,10 @@
     [[CCDirector sharedDirector] replaceScene:gameplayScene withTransition:transition];
 }
 
+- (void) menu {
+    CCScene *mainScene = [CCBReader loadAsScene: @"MainScene"];
+    CCTransition *transition = [CCTransition transitionFadeWithDuration:1.0f];
+    [[CCDirector sharedDirector] replaceScene:mainScene withTransition:transition];
+}
+
 @end

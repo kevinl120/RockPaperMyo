@@ -10,7 +10,7 @@
 
 @interface Recap : CCNode
 
-@property (nonatomic, assign) CCLabelTTF *finalScoreLabel;
-@property (nonatomic, assign) CCLabelTTF *highScoreLabel;
+@property (nonatomic, retain) CCLabelTTF *finalScoreLabel;
+@property (nonatomic, retain) CCLabelTTF *highScoreLabel;
 
 @end
