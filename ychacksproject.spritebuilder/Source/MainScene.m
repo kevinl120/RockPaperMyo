@@ -37,4 +37,6 @@
     [[CCDirector sharedDirector] presentViewController:controller animated:YES completion:nil];
 }
 
+// hi!
+
 @end
