@@ -221,10 +221,6 @@
 }
 
 -(void) triangleUpdate {
-//    NSInteger randomInteger;
-//    
-//    randomInteger = (arc4random() % 358) - 179;
-
     CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
     _count += 10;
     if (_count >= 179) {

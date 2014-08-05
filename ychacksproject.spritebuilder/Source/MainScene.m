@@ -19,7 +19,15 @@
 @end
 
 @implementation MainScene {
+    CCSprite *_triangle;
     
+    NSInteger _count;
+}
+
+- (void) didLoadFromCCB {
+    _count = -179;
+    
+    [self schedule:@selector(triangleUpdate) interval:0.05];
 }
 
 - (void) startGame {
@@ -35,6 +43,15 @@
     
     // Present the settings view controller modally.
     [[CCDirector sharedDirector] presentViewController:controller animated:YES completion:nil];
+}
+
+- (void) triangleUpdate {
+    CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
+    _count += 10;
+    if (_count >= 179) {
+        _count = -179;
+    }
+    _triangle.effect = hueEffect;
 }
 
 @end
