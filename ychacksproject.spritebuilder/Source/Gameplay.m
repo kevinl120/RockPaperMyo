@@ -244,7 +244,7 @@
     recapScreen.position = ccp(0, 0);
     [[CCDirector sharedDirector] replaceScene:scene];
     recapScreen.finalScoreLabel.string = [NSString stringWithFormat:@"%d", _score];
-    recapScreen.highScoreLabel.string = [NSString stringWithFormat:@"%d", [_highscoreDefaults integerForKey:@"highscore"]];
+    recapScreen.highScoreLabel.string = [NSString stringWithFormat:@"%ld", (long)[_highscoreDefaults integerForKey:@"highscore"]];
 }
 
 - (void) gotWrong {
@@ -296,7 +296,7 @@
 }
 
 
-
+//Hi :)
 
 
 @end

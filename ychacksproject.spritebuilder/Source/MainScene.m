@@ -45,6 +45,7 @@
     [[CCDirector sharedDirector] presentViewController:controller animated:YES completion:nil];
 }
 
+
 - (void) triangleUpdate {
     CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
     _count += 10;
@@ -53,5 +54,6 @@
     }
     _triangle.effect = hueEffect;
 }
+
 
 @end
