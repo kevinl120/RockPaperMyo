@@ -98,10 +98,15 @@
     // Set the hue
     _count = -179;
     
+    // Set the triangle to be behind everything
+    [self removeChild:_triangle];
+    [self addChild:_triangle z:-1];
+    
     // Set the time left to 10 seconds
     _timeCount = 1;
     // Set the scale of the time bar according to the time left
     _timer.scaleX = _timeCount/2;
+    
     // Update the time
     [self schedule:@selector(timerUpdate) interval:0.01];
     // Update the hue of the triangle in the background
