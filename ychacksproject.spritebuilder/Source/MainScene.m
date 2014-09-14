@@ -19,21 +19,43 @@
 @end
 
 @implementation MainScene {
+    // Triangle in the background
     CCSprite *_triangle;
     
+    // Used for changing hue
     NSInteger _count;
 }
 
 - (void) didLoadFromCCB {
+    // Set the hue
     _count = -179;
     
-    [self schedule:@selector(triangleUpdate) interval:0.05];
+    // Change the hue 20 times every second
+    [self schedule:@selector(updateTriangleHue) interval:0.05];
 }
 
 - (void) startGame {
+    // Load gameplay when play button is pressed
     CCScene *gameplayScene = [CCBReader loadAsScene: @"Gameplay"];
     CCTransition *transition = [CCTransition transitionCrossFadeWithDuration:0.1f];
     [[CCDirector sharedDirector] replaceScene:gameplayScene withTransition:transition];
+}
+
+- (void) updateTriangleHue {
+    
+    // Set the hue to the count previously set
+    CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
+    
+    // Increase the hue
+    _count += 10;
+    
+    // Set the hue back to the lowest number if the hue is greater than the highest number
+    if (_count >= 179) {
+        _count = -179;
+    }
+    
+    // Set the triangle's hue to hueEffect
+    _triangle.effect = hueEffect;
 }
 
 - (void)connect {
@@ -44,16 +66,5 @@
     // Present the settings view controller modally.
     [[CCDirector sharedDirector] presentViewController:controller animated:YES completion:nil];
 }
-
-
-- (void) triangleUpdate {
-    CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
-    _count += 10;
-    if (_count >= 179) {
-        _count = -179;
-    }
-    _triangle.effect = hueEffect;
-}
-
 
 @end

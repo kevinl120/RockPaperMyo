@@ -22,7 +22,6 @@
 
 @interface Gameplay ()
 
-// Current Pose - Used for Myo
 @property (strong, nonatomic) TLMPose *currentPose;
 
 @end
@@ -30,33 +29,40 @@
 
 
 @implementation Gameplay {
+    // The timer and the time
     CCNode *_timer;
     float _timeCount;
     
-    CCSprite *_picture;
-    
+    // The background image
     CCSprite *_background;
     
+    // The label for the score
     CCLabelTTF *_scoreLabel;
     
+    // The three images: Rock, Paper, and Scissors
     Rock *_rock;
     Paper *_paper;
     Scissors *_scissors;
     
+    // If the previous image was rock, paper, or scissors
     BOOL _previousRock;
     BOOL _previousPaper;
     BOOL _previousScissors;
     
+    // The layout box for the lives
     CCLayoutBox *_livesBox;
     
+    // The three lives (images)
     Heart *_heart1;
     Heart *_heart2;
     Heart *_heart3;
     
+    // The buttons for rock, paper, and scissors
     CCButton *_rockButton;
     CCButton *_paperButton;
     CCButton *_scissorsButton;
     
+    // The triangle in the background
     CCSprite *_triangle;
     
     NSInteger _count;
@@ -73,11 +79,12 @@
                                                  name:TLMMyoDidReceivePoseChangedNotification
                                                object:nil];
     
+    // Load the three images/ccb-s: Rock, Paper, and Scissors
     _rock = (Rock*)[CCBReader load:@"Rock"];
     _paper = (Paper*)[CCBReader load:@"Paper"];
     _scissors = (Scissors*)[CCBReader load:@"Scissors"];
     
-    
+    // Set the position of the three images
     _rock.positionType = CCPositionTypeNormalized;
     _rock.position = ccp(0.5, 0.475);
     _paper.positionType = CCPositionTypeNormalized;
@@ -85,15 +92,22 @@
     _scissors.positionType = CCPositionTypeNormalized;
     _scissors.position = ccp(0.5, 0.475);
     
-    
+    // Set the score to 0
     _score = 0;
+    
+    // Set the hue
     _count = -179;
     
+    // Set the time left to 10 seconds
     _timeCount = 1;
+    // Set the scale of the time bar according to the time left
     _timer.scaleX = _timeCount/2;
+    // Update the time
     [self schedule:@selector(timerUpdate) interval:0.01];
-    [self schedule:@selector(triangleUpdate) interval:0.05];
+    // Update the hue of the triangle in the background
+    [self schedule:@selector(updateTriangleHue) interval:0.05];
     
+    // Set the first picture
     [self changePicture];
 }
 
@@ -106,7 +120,7 @@
     TLMPose *pose = notification.userInfo[kTLMKeyPose];
     self.currentPose = pose;
     
-    // Handle the cases of the TLMPoseType enumeration, and change the color of helloLabel based on the pose we receive.
+    // Handle the cases of the TLMPoseType enumeration, and change the input based on the pose we receive.
     switch (pose.type) {
         case TLMPoseTypeNone:
             break;
@@ -131,47 +145,32 @@
 // -----------------------------------------------------------------------
 
 - (void) changePicture {
-    NSInteger randomInt;
+    // A random integer to find the next icon
+    NSInteger randomInt = (arc4random() % 3);
     
-    randomInt = (arc4random() % 3);
-    
-   // CCActionFadeOut *fadeOut = [CCActionFadeOut actionWithDuration:0.2f];
-    
+    // Remove the icon that is currently shown
     if ([[self children] containsObject:_rock]) {
-        //[_rock runAction:fadeOut];
         [_rock removeFromParent];
     }
     if ([[self children] containsObject:_paper]) {
-        //[_paper runAction:fadeOut];
         [_paper removeFromParent];
     }
     if ([[self children] containsObject:_scissors]) {
-        //[_scissors runAction:fadeOut];
         [_scissors removeFromParent];
     }
     
-    
+    // Add the icon based on the random number
     switch (randomInt) {
         case 0:
             [self addChild:_rock z:1];
-            
-            _previousRock = true;
-            _previousPaper = false;
-            _previousScissors = false;
             break;
             
         case 1:
             [self addChild:_paper z:1];
-            _previousPaper = true;
-            _previousRock = false;
-            _previousScissors = false;
             break;
             
         case 2:
             [self addChild:_scissors z:1];
-            _previousScissors = true;
-            _previousRock = false;
-            _previousPaper = false;
             break;
             
         default:
@@ -212,44 +211,46 @@
 // -----------------------------------------------------------------------
 
 - (void) timerUpdate {
+    // Subtract 0.1 seconds from the time
     _timeCount -= 0.001;
+    // Set the scale of the time bar based on the time
     _timer.scaleX = _timeCount/2;
+    
+    // Game over if time is less than 0
     if (_timeCount < 0.00001) {
         [self gameOver];
     }
 }
 
--(void) triangleUpdate {
+-(void) updateTriangleHue {
+    // Declare the hue
     CCEffectHue *hueEffect = [CCEffectHue effectWithHue:_count];
+    
+    // Add 10 to the hue
     _count += 10;
+    
+    // Set the hue back to the lowest if it exceeds the highest
     if (_count >= 179) {
         _count = -179;
     }
+    // Set the hue of the background triangle
     _triangle.effect = hueEffect;
 }
 
-- (void) gameOver {
-    CCScene *scene = [CCBReader loadAsScene:@"Recap"];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
-    
-    NSUserDefaults *_highscoreDefaults = [NSUserDefaults standardUserDefaults];
-    if (_score > [_highscoreDefaults integerForKey:@"highscore"]) {
-        [_highscoreDefaults setInteger:_score forKey:@"highscore"];
+- (void) gotWrong {
+    // Remove a life if there is more than 1 life, otherwise game is over
+    if ([[_livesBox children] containsObject:_heart3]) {
+        [_livesBox removeChild:_heart3];
+    } else if ([[_livesBox children] containsObject:_heart2]) {
+        [_livesBox removeChild:_heart2];
+    } else if ([[_livesBox children] containsObject:_heart1]) {
+        [self gameOver];
     }
     
-    Recap *recapScreen = (Recap *)scene.children[0];
-    recapScreen.positionType = CCPositionTypeNormalized;
-    recapScreen.position = ccp(0, 0);
-    [[CCDirector sharedDirector] replaceScene:scene];
-    recapScreen.finalScoreLabel.string = [NSString stringWithFormat:@"%d", _score];
-    recapScreen.highScoreLabel.string = [NSString stringWithFormat:@"%ld", (long)[_highscoreDefaults integerForKey:@"highscore"]];
-}
-
-- (void) gotWrong {
-    
+    // Blink
     CCActionBlink *blink = [CCActionBlink actionWithDuration:0.3f blinks:2];
     
+    // Blink the icon
     if ([[self children] containsObject:_rock]) {
         [_rock runAction:blink];
     }
@@ -259,18 +260,13 @@
     if ([[self children] containsObject:_scissors]) {
         [_scissors runAction:blink];
     }
-    
-    if ([[_livesBox children] containsObject:_heart3]) {
-        [_livesBox removeChild:_heart3];
-    } else if ([[_livesBox children] containsObject:_heart2]) {
-        [_livesBox removeChild:_heart2];
-    } else if ([[_livesBox children] containsObject:_heart1]) {
-        [self gameOver];
-    }
 }
 
 - (void) gotCorrect {
+    // Increase the score
     _score++;
+    
+    // Add a different amount of time based on how far the user is into the game
     if (_timeCount < 1.9) {
         if (_score <= 20) {
             _timeCount += 0.1;
@@ -289,15 +285,35 @@
     } else if (_timeCount > 1.9 && _timeCount < 2.0) {
         _timeCount = 2.0;
     }
+    
+    // Set the score label
     _scoreLabel.string = [NSString stringWithFormat:@"%d", _score];
     
+    // Change the picture
     [self changePicture];
 }
 
+- (void) gameOver {
+    // Recap screen
+    CCScene *scene = [CCBReader loadAsScene:@"Recap"];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
+    // Set the high score
+    NSUserDefaults *_highscoreDefaults = [NSUserDefaults standardUserDefaults];
+    if (_score > [_highscoreDefaults integerForKey:@"highscore"]) {
+        [_highscoreDefaults setInteger:_score forKey:@"highscore"];
+    }
+    
+    // Load the recap screen with the score and highscore
+    Recap *recapScreen = (Recap *)scene.children[0];
+    recapScreen.positionType = CCPositionTypeNormalized;
+    recapScreen.position = ccp(0, 0);
+    [[CCDirector sharedDirector] replaceScene:scene];
+    recapScreen.finalScoreLabel.string = [NSString stringWithFormat:@"%d", _score];
+    recapScreen.highScoreLabel.string = [NSString stringWithFormat:@"%ld", (long)[_highscoreDefaults integerForKey:@"highscore"]];
+}
 
-//Hi :)
-
-// hi again
 
 
 @end

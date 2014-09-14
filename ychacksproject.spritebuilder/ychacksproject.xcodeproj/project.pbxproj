@@ -281,13 +281,12 @@
 		B737893C1807616C0076A88C /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				1ED7B9C5198DEDC7003E6CBD /* TLHMViewController.h */,
-				1ED7B9C6198DEDC7003E6CBD /* TLHMViewController.m */,
-				1ED7B9C7198DEDC7003E6CBD /* TLHMViewController.xib */,
 				B737893D1807617C0076A88C /* AppDelegate.h */,
 				B737893E1807617C0076A88C /* AppDelegate.m */,
 				1ED7B989198DA671003E6CBD /* Gameplay.h */,
 				1ED7B98A198DA671003E6CBD /* Gameplay.m */,
+				1ED7B9C0198DE69E003E6CBD /* Heart.h */,
+				1ED7B9C1198DE69E003E6CBD /* Heart.m */,
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
 				1ED7B998198DA96C003E6CBD /* Paper.h */,
@@ -298,8 +297,9 @@
 				1ED7B9A5198DB801003E6CBD /* Rock.m */,
 				1ED7B99B198DA974003E6CBD /* Scissors.h */,
 				1ED7B99C198DA974003E6CBD /* Scissors.m */,
-				1ED7B9C0198DE69E003E6CBD /* Heart.h */,
-				1ED7B9C1198DE69E003E6CBD /* Heart.m */,
+				1ED7B9C5198DEDC7003E6CBD /* TLHMViewController.h */,
+				1ED7B9C6198DEDC7003E6CBD /* TLHMViewController.m */,
+				1ED7B9C7198DEDC7003E6CBD /* TLHMViewController.xib */,
 			);
 			name = Source;
 			sourceTree = "<group>";
