@@ -37,7 +37,7 @@
 - (void) startGame {
     // Load gameplay when play button is pressed
     CCScene *gameplayScene = [CCBReader loadAsScene: @"Gameplay"];
-    CCTransition *transition = [CCTransition transitionCrossFadeWithDuration:0.1f];
+    CCTransition *transition = [CCTransition transitionCrossFadeWithDuration:1.0f];
     [[CCDirector sharedDirector] replaceScene:gameplayScene withTransition:transition];
 }
 

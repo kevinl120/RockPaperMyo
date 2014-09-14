@@ -98,9 +98,7 @@
     // Set the hue
     _count = -179;
     
-    // Set the triangle to be behind everything
-    [self removeChild:_triangle];
-    [self addChild:_triangle z:-1];
+    
     
     // Set the time left to 10 seconds
     _timeCount = 1;
@@ -311,10 +309,11 @@
     }
     
     // Load the recap screen with the score and highscore
+    CCTransition *transition = [CCTransition transitionCrossFadeWithDuration:1.0f];
     Recap *recapScreen = (Recap *)scene.children[0];
     recapScreen.positionType = CCPositionTypeNormalized;
     recapScreen.position = ccp(0, 0);
-    [[CCDirector sharedDirector] replaceScene:scene];
+    [[CCDirector sharedDirector] replaceScene:scene withTransition:transition];
     recapScreen.finalScoreLabel.string = [NSString stringWithFormat:@"%d", _score];
     recapScreen.highScoreLabel.string = [NSString stringWithFormat:@"%ld", (long)[_highscoreDefaults integerForKey:@"highscore"]];
 }
