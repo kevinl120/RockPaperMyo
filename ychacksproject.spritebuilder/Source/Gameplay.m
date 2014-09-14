@@ -162,18 +162,27 @@
         [_scissors removeFromParent];
     }
     
+    CCActionScaleTo *scaleUp = [CCActionScaleTo actionWithDuration:0.4f scale:1.0f];
+    CCActionEaseBounceOut *bounceScale = [CCActionEaseBounceOut actionWithAction:scaleUp];
+    
     // Add the icon based on the random number
     switch (randomInt) {
         case 0:
             [self addChild:_rock z:1];
+            _rock.scale = 0.001;
+            [_rock runAction:bounceScale];
             break;
             
         case 1:
             [self addChild:_paper z:1];
+            _paper.scale = 0.001;
+            [_paper runAction:bounceScale];
             break;
             
         case 2:
             [self addChild:_scissors z:1];
+            _scissors.scale = 0.001;
+            [_scissors runAction:bounceScale];
             break;
             
         default:
