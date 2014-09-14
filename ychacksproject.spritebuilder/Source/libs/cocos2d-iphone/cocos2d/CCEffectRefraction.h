@@ -23,18 +23,18 @@
  *  resulting in maximum minification of the refracted image, 0 resulting in no
  *  refraction, and 1 resulting in maximum magnification of the refracted image.
  */
-@property (nonatomic) float refraction;
+@property (nonatomic, assign) float refraction;
 
 /** The environment that will be refracted by the affected node. Typically this is a
  *  sprite that serves as the background for the affected node so it appears that the viewer
  *  is seeing the refracted environment through the refracting node.
  */
-@property (nonatomic) CCSprite *environment;
+@property (nonatomic, strong) CCSprite *environment;
 
 /** The normal map that encodes the normal vectors of the affected node. Each pixel in the normal
  *  map is a 3 component vector that is perpendicular to the surface of the sprite at that point.
  */
-@property (nonatomic) CCSpriteFrame *normalMap;
+@property (nonatomic, strong) CCSpriteFrame *normalMap;
 
 
 /// -----------------------------------------------------------------------

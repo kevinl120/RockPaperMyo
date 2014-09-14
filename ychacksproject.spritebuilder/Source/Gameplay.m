@@ -22,6 +22,7 @@
 
 @interface Gameplay ()
 
+// Current Pose - Used for Myo
 @property (strong, nonatomic) TLMPose *currentPose;
 
 @end
@@ -148,8 +149,6 @@
         //[_scissors runAction:fadeOut];
         [_scissors removeFromParent];
     }
-    
-    CCEffectBrightness *brightnessEffect = [CCEffectBrightness effectWithBrightness: sin(45)];
     
     
     switch (randomInt) {

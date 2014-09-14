@@ -21,7 +21,7 @@
 	<key>engine</key>
 	<integer>0</integer>
 	<key>excludedFromPackageMigration</key>
-	<integer>0</integer>
+	<false/>
 	<key>exporter</key>
 	<string>ccbi</string>
 	<key>fileType</key>
@@ -179,10 +179,8 @@
 		</dict>
 	</dict>
 	<key>versionStr</key>
-	<string>Version: 1.2.0-beta
-Sku: 
-GitHub: 
-8b724d6c13
+	<string>Version: 1.2.1
+GitHub: dde98b0763
 </string>
 </dict>
 </plist>

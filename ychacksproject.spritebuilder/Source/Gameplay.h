@@ -10,6 +10,7 @@
 
 @interface Gameplay : CCNode
 
+// A score to send to the recap screen
 @property (nonatomic, assign) int score;
 
 @end
